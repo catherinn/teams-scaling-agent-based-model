@@ -1,5 +1,11 @@
 # teams-scaling-agent-based-model
 
+## INSTALLING (local)
+* Download Netlogo 6.3.0 (https://ccl.northwestern.edu/netlogo/download.shtml)
+* Open the project file in Netlogo
+
+  
+
 ## WHAT IS IT?
 
 This model of scaling product development teams illustrates the behaviour of how adding new team members into a startup environment (which usually starts with one team) negatively impacts the output created by the whole product development department.
