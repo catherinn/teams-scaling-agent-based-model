@@ -11,7 +11,7 @@
 This model of scaling product development teams illustrates the behaviour of how adding new team members into a startup environment (which usually starts with one team) negatively impacts the output created by the whole product development department.
 Product development teams are usually cross-functional teams of individuals from different areas (product manager, UX, developers etc.) that work in an agile environment. 
 
-The exact rules are defined based on my empirical experience working in various companies of different sizes and incorporate 2 well-knonw theoretical concepts:
+The exact rules are defined based on my empirical experience working in various companies of different sizes and incorporate 2 well-known theoretical concepts:
 
 -  Classification of a group's life cycle - proposed by psychologist Bruce Tuckman in 1965
 - The law of diminishing marginal productivity/returns -  first conceptualized by David Ricardo in his book "On the Principles of Political Economy and Taxation," published in 1817
