@@ -44,20 +44,20 @@
 
           <div class="panel">
             <div class="panel-head">
-              <h2>Output over time</h2>
+              <h2>Output over time <span class="info" tabindex="0" role="button" aria-label="About this chart">i<span class="info-pop" role="tooltip">We simulate your organisation <span id="nruns"></span> times, because hiring and leaving involve chance. The line is the typical result, the shaded area the likely range (8 out of 10 runs). Output is counted in people working as productively as your team does today.</span></span></h2>
               <div class="legend">
                 <span><i class="sw sw-head"></i>Headcount (what leaders expect)</span>
                 <span><i class="sw sw-real"></i>Real output</span>
+                <span><i class="sw sw-band"></i>Likely range</span>
                 <span id="legend-base" hidden><i class="sw sw-base"></i>Without the layoff</span>
               </div>
             </div>
             <div id="chart" class="chart"></div>
-            <p class="note">We simulate your organisation <span id="nruns"></span> times. The line is the typical result, the shaded area the likely range. Output is counted in people working as productively as your team does today.</p>
           </div>
 
           <div class="panel">
             <div class="panel-head">
-              <h2>Teams in month <span id="team-month"></span></h2>
+              <h2>Teams in month <span id="team-month"></span> <span class="info" tabindex="0" role="button" aria-label="About the team view">i<span class="info-pop" role="tooltip">Each box is a team, each dot a person, from one typical run. The colour shows how well the team works together: it improves over time and drops when people join or leave, or when teams are split or merged. Drag the slider to go back in time.</span></span></h2>
               <div class="legend">
                 <span><i class="sw st-forming"></i>Forming</span>
                 <span><i class="sw st-storming"></i>Storming</span>
@@ -67,7 +67,6 @@
             </div>
             <input id="month-slider" type="range" min="0" value="0" aria-label="Month to show" />
             <div id="teams" class="teams"></div>
-            <p class="note">Each box is a team, each dot a person. The colour shows how well the team works together: it improves over time and drops when people join or leave, or when teams are split or merged.</p>
           </div>
 
           <div class="actions">
