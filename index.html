@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Scaling: what growing or cutting really does to team output</title>
+    <meta name="description" content="Scaling up or scaling down, every change costs your team output. Simulate what hiring sprees and layoffs really do." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%235b4bdb'/><path d='M3 12 L7 7 L10 9 L13 4' stroke='white' stroke-width='2' fill='none'/></svg>" />
+    <script type="module" crossorigin src="./assets/index-Bhk1yrEG.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-J4ADCwbX.css">
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="titlebar">
+          <h1>Team Scaling</h1>
+          <a class="gh" href="https://github.com/catherinn/teams-scaling-agent-based-model" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.290 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.130-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Model details on GitHub</span></a>
+        </div>
+        <p class="tagline">Scaling up or scaling down, every change costs your team output. See how much.</p>
+        <p class="disclaimer">A tool to start a conversation, not a forecast. Every number can be adjusted under <a href="#controls" id="open-advanced">Advanced assumptions</a>.</p>
+        <div class="intro">
+          <div>
+            <h2>⬆ Scaling up</h2>
+            <p>New people need months to ramp up, and every joiner sets their team back. Teams split as they grow, and coordination eats more time. Hire too fast and output per person collapses.</p>
+          </div>
+          <div>
+            <h2>⬇ Scaling down</h2>
+            <p>Layoffs and high turnover remove more output than headcount. Knowledge leaves with people, teams are merged, the atmosphere suffers and more people quit.</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="presets" aria-label="Scenarios">
+        <span class="label">Try a scenario:</span>
+        <div id="presets"></div>
+      </section>
+
+      <div class="layout">
+        <aside id="controls" aria-label="Parameters"></aside>
+
+        <section class="results">
+          <p id="headline" class="headline" aria-live="polite"></p>
+          <div id="cards" class="cards"></div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Output over time <span class="info" tabindex="0" role="button" aria-label="About this chart">i<span class="info-pop" role="tooltip">We simulate your organisation <span id="nruns"></span> times, because hiring and leaving involve chance. The line is the typical result, the shaded area the likely range (8 out of 10 runs). Output is counted in people working as productively as your team does today.</span></span></h2>
+              <div class="legend">
+                <span><i class="sw sw-head"></i>Headcount (what leaders expect)</span>
+                <span><i class="sw sw-real"></i>Real output</span>
+                <span><i class="sw sw-band"></i>Likely range</span>
+                <span id="legend-base" hidden><i class="sw sw-base"></i>Without the layoff</span>
+              </div>
+            </div>
+            <div id="chart" class="chart"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Teams in month <span id="team-month"></span> <span class="info" tabindex="0" role="button" aria-label="About the team view">i<span class="info-pop" role="tooltip">Each box is a team, each dot a person, from one typical run. The colour shows how well the team works together: it improves over time and drops when people join or leave, or when teams are split or merged. Drag the slider to go back in time.</span></span></h2>
+              <div class="legend">
+                <span title="New team. People are getting to know each other and are polite and careful. Output is low."><i class="sw st-forming"></i>Forming</span>
+                <span title="Differences come out: friction about roles and ways of working. Output starts to rise."><i class="sw st-storming"></i>Storming</span>
+                <span title="The team has agreed how it works together. Output is good."><i class="sw st-norming"></i>Norming</span>
+                <span title="The team runs smoothly on its own. Full output."><i class="sw st-performing"></i>Performing</span>
+              </div>
+            </div>
+            <input id="month-slider" type="range" min="0" value="0" aria-label="Month to show" />
+            <div id="teams" class="teams"></div>
+            <details class="stages">
+              <summary>What do the stages mean?</summary>
+              <ul>
+                <li><i class="sw st-forming"></i><b>Forming:</b> New team. People are getting to know each other and are polite and careful. Output is low.</li>
+                <li><i class="sw st-storming"></i><b>Storming:</b> Differences come out: friction about roles and ways of working. Output starts to rise.</li>
+                <li><i class="sw st-norming"></i><b>Norming:</b> The team has agreed how it works together. Output is good.</li>
+                <li><i class="sw st-performing"></i><b>Performing:</b> The team runs smoothly on its own. Full output.</li>
+              </ul>
+              <p>Every team goes through these stages (Tuckman, 1965). A new team needs most of a year to get to performing, and anyone joining or leaving can push it back a stage.</p>
+            </details>
+          </div>
+
+          <div class="actions">
+            <button id="share" type="button">Copy link to this scenario</button>
+            <button id="reset" type="button" class="ghost">Reset</button>
+          </div>
+        </section>
+      </div>
+
+      <section class="explain">
+        <h2>How it works</h2>
+        <div class="grid">
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12C12 7 8 5 4 5c0 5 3 7 8 7z"/><path d="M12 14c0-4 3-6 8-6 0 4-3 6-8 6z"/></svg></div>
+            <h3>New people need time</h3>
+            <p>Nobody is fully productive on day one. Experienced hires need about half a year, juniors up to two years.</p>
+          </div>
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M14 14.5c.6-.3 1.3-.5 2-.5 3.3 0 6 2.7 6 6"/></svg></div>
+            <h3>Teams need time together</h3>
+            <p>A new team needs most of a year to really click. Every arrival or departure sets it back a little.</p>
+          </div>
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 15l4-5 4 3 4-6"/><path d="M15 7h3v3"/></svg></div>
+            <h3>Bigger isn't automatically better</h3>
+            <p>More people means more alignment. Past about ten people, a team gets slower, not faster.</p>
+          </div>
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h8"/><path d="M10 12h11"/><path d="M18 9l3 3-3 3"/></svg></div>
+            <h3>Every exit has a hidden price</h3>
+            <p>Know-how leaves with people, seats stay empty for months, and many departures drag down the mood of everyone who stays.</p>
+          </div>
+        </div>
+        <p class="more-links">
+          <a href="https://github.com/catherinn/teams-scaling-agent-based-model/blob/main/docs/how-the-model-works.md" target="_blank" rel="noopener">Read the full model →</a>
+          <a href="https://github.com/catherinn/teams-scaling-agent-based-model/tree/main/netlogo" target="_blank" rel="noopener">Original research model (NetLogo) →</a>
+        </p>
+      </section>
+
+      <section class="research">
+        <h2>The research behind it</h2>
+        <p class="sub">The tool turns well-known findings about teams into a simulation. The first three are built directly into the original model; the others support its assumptions.</p>
+        <ol class="research-list">
+          <li>
+            <h3>Teams go through stages</h3>
+            <p>A group needs time to become a team: first getting to know each other, then friction, then agreeing on how to work, and only then performing.</p>
+            <p class="where"><span>In the tool:</span> Team colours and the time it takes a new team to reach full output.</p>
+            <p class="cite">Tuckman, B. W. (1965). Developmental sequence in small groups. <em>Psychological Bulletin</em>.</p>
+          </li>
+          <li>
+            <h3>Adding people can slow you down</h3>
+            <p>Every new person adds conversations and needs onboarding. Adding people to a late software project makes it later.</p>
+            <p class="where"><span>In the tool:</span> Ramp-up, mentoring load, and the cost of bigger teams.</p>
+            <p class="cite">Brooks, F. P. (1975). <em>The Mythical Man-Month</em>.</p>
+          </li>
+          <li>
+            <h3>More input, less extra output</h3>
+            <p>Beyond a certain point, each additional person adds less than the one before.</p>
+            <p class="where"><span>In the tool:</span> Teams get slower past about ten people.</p>
+            <p class="cite">Ricardo, D. (1817). <em>On the Principles of Political Economy and Taxation</em>.</p>
+          </li>
+          <li>
+            <h3>Small, stable teams work best</h3>
+            <p>Effective teams are kept small and stay together long enough to learn how to work as one.</p>
+            <p class="where"><span>In the tool:</span> Teams split when they grow too big; changes knock teams back.</p>
+            <p class="cite">Hackman, J. R. (2002). <em>Leading Teams</em>.</p>
+          </li>
+          <li>
+            <h3>Familiar teams perform better</h3>
+            <p>Teams whose members have worked together before deliver better results, independent of individual experience.</p>
+            <p class="where"><span>In the tool:</span> Team cohesion that grows with time together.</p>
+            <p class="cite">Huckman, R. S., Staats, B. R. &amp; Upton, D. M. (2009). Team familiarity, role experience, and performance. <em>Management Science</em>.</p>
+          </li>
+          <li>
+            <h3>Turnover hurts performance</h3>
+            <p>When people leave, work quality and productivity drop, beyond the empty seat itself.</p>
+            <p class="where"><span>In the tool:</span> Knowledge loss, vacancies, and the atmosphere cost of high turnover.</p>
+            <p class="cite">Ton, Z. &amp; Huckman, R. S. (2008). Managing the impact of employee turnover on performance. <em>Organization Science</em>; Hausknecht, J. P. &amp; Trevor, C. O. (2011). Collective turnover. <em>Journal of Management</em>.</p>
+          </li>
+          <li>
+            <h3>Layoffs affect those who stay</h3>
+            <p>People who survive a layoff often lose motivation and commitment, and more of them leave.</p>
+            <p class="where"><span>In the tool:</span> Morale drop and extra departures after a layoff.</p>
+            <p class="cite">Brockner, J. (1988). The effects of work layoffs on survivors. <em>Research in Organizational Behavior</em>.</p>
+          </li>
+        </ol>
+        <p class="caveat">The numbers in the tool are plausible estimates, not values measured in these studies. Real data to calibrate them is very welcome.</p>
+      </section>
+
+      <section class="feedback" id="feedback" hidden>
+        <h2>What do you think?</h2>
+        <p class="sub">Does this match your experience? Two minutes of feedback helps make the model better.</p>
+        <form id="feedback-form">
+          <fieldset class="useful">
+            <legend>Was this useful?</legend>
+            <label><input type="radio" name="useful" value="Yes, very" required> Yes, very</label>
+            <label><input type="radio" name="useful" value="Somewhat"> Somewhat</label>
+            <label><input type="radio" name="useful" value="Not really"> Not really</label>
+          </fieldset>
+          <label class="field">What's missing, or doesn't match your experience?
+            <textarea name="comment" rows="3" maxlength="2000"></textarea>
+          </label>
+          <div class="row2">
+            <label class="field">Your role <span class="opt">(optional)</span>
+              <input name="role" maxlength="120" placeholder="e.g. HR, founder, engineering lead">
+            </label>
+            <label class="field">Email, if you'd like a reply <span class="opt">(optional)</span>
+              <input name="email" type="email" maxlength="200">
+            </label>
+          </div>
+          <button type="submit">Send feedback</button>
+          <p class="status" id="feedback-status" aria-live="polite"></p>
+        </form>
+      </section>
+      <p class="credits">Based on the agent-based <a href="https://github.com/catherinn/teams-scaling-agent-based-model/tree/main/netlogo" target="_blank" rel="noopener">NetLogo model “Product Team Scaling”</a> by K. Lechner (2023). Details, sources and code on <a href="https://github.com/catherinn/teams-scaling-agent-based-model" target="_blank" rel="noopener">GitHub</a>. © 2023-2026 K. Lechner. All rights reserved.</p>
+    </main>
+
+  </body>
+</html>
