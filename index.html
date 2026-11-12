@@ -60,14 +60,24 @@
             <div class="panel-head">
               <h2>Teams in month <span id="team-month"></span> <span class="info" tabindex="0" role="button" aria-label="About the team view">i<span class="info-pop" role="tooltip">Each box is a team, each dot a person, from one typical run. The colour shows how well the team works together: it improves over time and drops when people join or leave, or when teams are split or merged. Drag the slider to go back in time.</span></span></h2>
               <div class="legend">
-                <span><i class="sw st-forming"></i>Forming</span>
-                <span><i class="sw st-storming"></i>Storming</span>
-                <span><i class="sw st-norming"></i>Norming</span>
-                <span><i class="sw st-performing"></i>Performing</span>
+                <span title="New team. People are getting to know each other and are polite and careful. Output is low."><i class="sw st-forming"></i>Forming</span>
+                <span title="Differences come out: friction about roles and ways of working. Output starts to rise."><i class="sw st-storming"></i>Storming</span>
+                <span title="The team has agreed how it works together. Output is good."><i class="sw st-norming"></i>Norming</span>
+                <span title="The team runs smoothly on its own. Full output."><i class="sw st-performing"></i>Performing</span>
               </div>
             </div>
             <input id="month-slider" type="range" min="0" value="0" aria-label="Month to show" />
             <div id="teams" class="teams"></div>
+            <details class="stages">
+              <summary>What do the stages mean?</summary>
+              <ul>
+                <li><i class="sw st-forming"></i><b>Forming:</b> New team. People are getting to know each other and are polite and careful. Output is low.</li>
+                <li><i class="sw st-storming"></i><b>Storming:</b> Differences come out: friction about roles and ways of working. Output starts to rise.</li>
+                <li><i class="sw st-norming"></i><b>Norming:</b> The team has agreed how it works together. Output is good.</li>
+                <li><i class="sw st-performing"></i><b>Performing:</b> The team runs smoothly on its own. Full output.</li>
+              </ul>
+              <p>Every team goes through these stages (Tuckman, 1965). A new team needs most of a year to get to performing, and anyone joining or leaving can push it back a stage.</p>
+            </details>
           </div>
 
           <div class="actions">
