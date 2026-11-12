@@ -138,3 +138,15 @@ aside details[open] summary { margin-bottom: 8px; }
 
 .headline.invite { border-left-color: var(--head); }
 .cards[hidden] { display: none; }
+
+.research { border-top: 1px solid var(--line); padding: 28px 0 24px; }
+.research h2 { font-size: 20px; margin-bottom: 4px; }
+.research .sub { margin: 0 0 16px; color: var(--muted); font-size: 15px; }
+.research-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.research-list li { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.research-list h3 { margin: 0; font-size: 16px; }
+.research-list p { margin: 0; font-size: 15px; color: #3b3850; }
+.research-list .where { font-size: 14px; }
+.research-list .where span { font-weight: 600; color: var(--accent); }
+.research-list .cite { margin-top: auto; padding-top: 6px; font-size: 12px; color: var(--muted); border-top: 1px dashed var(--line); }
+.research .caveat { margin-top: 16px; padding: 12px 14px; background: #fff7ed; border-radius: 10px; font-size: 14px; }

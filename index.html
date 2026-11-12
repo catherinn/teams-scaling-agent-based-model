@@ -77,7 +77,7 @@
       </div>
 
       <section class="explain">
-        <h2>How it works, in plain words</h2>
+        <h2>How it works</h2>
         <div class="grid">
           <div class="point">
             <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12C12 7 8 5 4 5c0 5 3 7 8 7z"/><path d="M12 14c0-4 3-6 8-6 0 4-3 6-8 6z"/></svg></div>
@@ -105,6 +105,56 @@
           <a href="https://github.com/catherinn/teams-scaling-agent-based-model/blob/main/docs/how-the-model-works.md" target="_blank" rel="noopener">Read the full model →</a>
           <a href="https://github.com/catherinn/teams-scaling-agent-based-model/tree/main/netlogo" target="_blank" rel="noopener">Original research model (NetLogo) →</a>
         </p>
+      </section>
+
+      <section class="research">
+        <h2>The research behind it</h2>
+        <p class="sub">The tool turns well-known findings about teams into a simulation. The first three are built directly into the original model; the others support its assumptions.</p>
+        <ol class="research-list">
+          <li>
+            <h3>Teams go through stages</h3>
+            <p>A group needs time to become a team: first getting to know each other, then friction, then agreeing on how to work, and only then performing.</p>
+            <p class="where"><span>In the tool:</span> Team colours and the time it takes a new team to reach full output.</p>
+            <p class="cite">Tuckman, B. W. (1965). Developmental sequence in small groups. <em>Psychological Bulletin</em>.</p>
+          </li>
+          <li>
+            <h3>Adding people can slow you down</h3>
+            <p>Every new person adds conversations and needs onboarding. Adding people to a late software project makes it later.</p>
+            <p class="where"><span>In the tool:</span> Ramp-up, mentoring load, and the cost of bigger teams.</p>
+            <p class="cite">Brooks, F. P. (1975). <em>The Mythical Man-Month</em>.</p>
+          </li>
+          <li>
+            <h3>More input, less extra output</h3>
+            <p>Beyond a certain point, each additional person adds less than the one before.</p>
+            <p class="where"><span>In the tool:</span> Teams get slower past about ten people.</p>
+            <p class="cite">Ricardo, D. (1817). <em>On the Principles of Political Economy and Taxation</em>.</p>
+          </li>
+          <li>
+            <h3>Small, stable teams work best</h3>
+            <p>Effective teams are kept small and stay together long enough to learn how to work as one.</p>
+            <p class="where"><span>In the tool:</span> Teams split when they grow too big; changes knock teams back.</p>
+            <p class="cite">Hackman, J. R. (2002). <em>Leading Teams</em>.</p>
+          </li>
+          <li>
+            <h3>Familiar teams perform better</h3>
+            <p>Teams whose members have worked together before deliver better results, independent of individual experience.</p>
+            <p class="where"><span>In the tool:</span> Team cohesion that grows with time together.</p>
+            <p class="cite">Huckman, R. S., Staats, B. R. &amp; Upton, D. M. (2009). Team familiarity, role experience, and performance. <em>Management Science</em>.</p>
+          </li>
+          <li>
+            <h3>Turnover hurts performance</h3>
+            <p>When people leave, work quality and productivity drop, beyond the empty seat itself.</p>
+            <p class="where"><span>In the tool:</span> Knowledge loss, vacancies, and the atmosphere cost of high turnover.</p>
+            <p class="cite">Ton, Z. &amp; Huckman, R. S. (2008). Managing the impact of employee turnover on performance. <em>Organization Science</em>; Hausknecht, J. P. &amp; Trevor, C. O. (2011). Collective turnover. <em>Journal of Management</em>.</p>
+          </li>
+          <li>
+            <h3>Layoffs affect those who stay</h3>
+            <p>People who survive a layoff often lose motivation and commitment, and more of them leave.</p>
+            <p class="where"><span>In the tool:</span> Morale drop and extra departures after a layoff.</p>
+            <p class="cite">Brockner, J. (1988). The effects of work layoffs on survivors. <em>Research in Organizational Behavior</em>.</p>
+          </li>
+        </ol>
+        <p class="caveat">The numbers in the tool are plausible estimates, not values measured in these studies. Real data to calibrate them is very welcome.</p>
       </section>
 
       <section class="feedback" id="feedback" hidden>

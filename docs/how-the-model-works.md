@@ -136,3 +136,11 @@ This is a rewrite of an agent-based model built in NetLogo in 2023, kept in [`ne
 - Tuckman, B. W. (1965). Developmental sequence in small groups. *Psychological Bulletin*, 63(6).
 - Ricardo, D. (1817). *On the Principles of Political Economy and Taxation.*
 - Brooks, F. P. (1975). *The Mythical Man-Month.*
+
+Research that supports the assumptions (the defaults are not fitted to these studies):
+
+- Hackman, J. R. (2002). *Leading Teams: Setting the Stage for Great Performances.* Harvard Business School Press.
+- Huckman, R. S., Staats, B. R. & Upton, D. M. (2009). Team familiarity, role experience, and performance: Evidence from Indian software services. *Management Science*, 55(1).
+- Ton, Z. & Huckman, R. S. (2008). Managing the impact of employee turnover on performance: The role of process conformance. *Organization Science*, 19(1).
+- Hausknecht, J. P. & Trevor, C. O. (2011). Collective turnover at the group, unit, and organizational levels. *Journal of Management*, 37(1).
+- Brockner, J. (1988). The effects of work layoffs on survivors: Research, theory, and practice. *Research in Organizational Behavior*, 10.
