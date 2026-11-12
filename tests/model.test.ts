@@ -16,9 +16,25 @@ describe("model", () => {
     expect(best).toBeLessThanOrEqual(12);
   });
 
-  it("real output never exceeds headcount", () => {
-    for (const r of simulate(P({ hiresPerYear: 40, months: 60 }), 3).months) {
-      expect(r.output).toBeLessThanOrEqual(r.headcount + 1e-9);
+  it("an established organisation starts at 100% of its headcount", () => {
+    for (const n of [5, 23, 100, 400]) {
+      const r = simulate(P({ startHeadcount: n, established: true }), 2);
+      expect(r.months[0].output).toBeCloseTo(n, 6);
+    }
+  });
+
+  it("an established organisation with no change stays at 100%", () => {
+    const r = simulate(P({ startHeadcount: 60, established: true, hiresPerYear: 0, months: 24 }), 2);
+    for (const m of r.months) expect(m.output).toBeCloseTo(60, 6);
+  });
+
+  it("a brand-new team starts well below its headcount", () => {
+    expect(simulate(P(), 1).months[0].output).toBeLessThan(5 * 0.5);
+  });
+
+  it("growing beyond today's structure costs output per head", () => {
+    for (const r of simulate(P({ startHeadcount: 50, established: true, hiresPerYear: 40, months: 60 }), 3).months.slice(1)) {
+      expect(r.output).toBeLessThan(r.headcount);
     }
   });
 

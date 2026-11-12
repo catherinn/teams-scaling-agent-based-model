@@ -31,6 +31,8 @@ An agent-based model: every person and every team is simulated month by month, m
 - **Bigger means more overhead.** Communication paths grow as n(n-1)/2, so a team's output peaks at around 10-12 people. Teams split when they reach the split size and merge when they shrink below the minimum. Each extra team adds coordination overhead.
 - **Layoffs cost more than salaries.** Leavers take knowledge with them, survivors lose motivation for about a year, and more people leave voluntarily. Layoff scenarios are compared with the same organisation without the layoff.
 
+Output is measured against your organisation today: an established team starts at 100%, so the model never claims to know how productive you are now, only what a change costs from there. A brand-new team starts lower because it still has to ramp up and gel.
+
 Every assumption is a parameter under *Advanced assumptions* in the UI, and in `DEFAULTS` in [`src/model.ts`](src/model.ts). **It is a thinking tool, not a forecast.**
 
 ## Origins

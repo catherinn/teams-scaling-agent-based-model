@@ -183,7 +183,7 @@ function render(base?: Summary) {
   const i = insights(params, summary, base);
   const last = summary.bands[summary.bands.length - 1];
 
-  let headline = `After ${params.months} months you have <b>${fmt(i.finalHeadcount)} people</b>, but they deliver what <b>${fmt(i.finalOutput, 1)}</b> fully productive people would: <b>${fmt(i.efficiency * 100)}%</b> of what headcount suggests.`;
+  let headline = `After ${params.months} months you have <b>${fmt(i.finalHeadcount)} people</b>, but they deliver what <b>${fmt(i.finalOutput, 1)}</b> people at today's productivity would: <b>${fmt(i.efficiency * 100)}%</b> of what headcount suggests.`;
   if (i.layoff) {
     headline = `Three months after the layoff you have <b>${fmt(i.layoff.headcountCut)}% fewer people</b> than without it, but <b>${fmt(i.layoff.outputCut)}% less output</b>. ` + headline;
   }
@@ -191,7 +191,7 @@ function render(base?: Summary) {
 
   const cards: [string, string, string][] = [
     ["Headcount", fmt(i.finalHeadcount), `in month ${params.months}`],
-    ["Real output", fmt(i.finalOutput, 1), "fully productive people"],
+    ["Real output", fmt(i.finalOutput, 1), "people at today's productivity"],
     ["Efficiency", `${fmt(i.efficiency * 100)}%`, "real output ÷ headcount"],
     ["Lost to friction", fmt(i.lostPersonMonths), "person-months over the period"],
     ["Teams", fmt(last.teams, 1), `in month ${params.months}`],

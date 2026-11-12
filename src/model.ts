@@ -12,8 +12,12 @@
 // - Layoffs, staff turnover and extra departures after a layoff are modelled.
 // - Many seeded runs are aggregated into a median and a 10-90% band.
 //
-// Units: 1.0 = the output of one fully productive person in a frictionless world.
-// "Perceived output" is therefore simply the headcount.
+// Units: 1.0 = the output of one person at TODAY's productivity: a ramped-up,
+// performing member of the starting organisation. We know nothing about how
+// productive the real organisation is today, so today counts as 100% and the model
+// only shows what changes cost relative to it. An established organisation starts
+// exactly at its headcount; a brand-new team starts lower because it still has to
+// ramp up and gel. "Perceived output" is therefore simply the headcount.
 
 export interface Params {
   months: number;
@@ -145,7 +149,7 @@ export function simulate(p: Params, seed = p.seed): RunResult {
 
   const newPerson = (senior: boolean, ramped: boolean): Person => ({
     senior,
-    skill: ramped ? (senior ? 1 : JUNIOR_CAP + (1 - JUNIOR_CAP) * rand()) : senior ? SENIOR_START : JUNIOR_START,
+    skill: ramped ? 1 : senior ? SENIOR_START : JUNIOR_START, // existing staff are fully ramped in their roles
     monthsIn: ramped ? 24 : 0,
   });
   const isSenior = () => rand() * 100 < p.seniorShare;
@@ -160,6 +164,15 @@ export function simulate(p: Params, seed = p.seed): RunResult {
     for (let i = 0; i < nTeams; i++) teams.push({ id: nextId++, members: [], cohesion: p.established ? 1 : COHESION_NEW });
     for (let i = 0; i < start; i++) teams[i % nTeams].members.push(newPerson(isSenior(), p.established));
   }
+
+  // Reference: per-person output of today's organisation once ramped up and performing.
+  // Structural overhead that already exists today (team sizes, number of teams) is part
+  // of the baseline, not a cost of change.
+  const reference = (() => {
+    const n = teams.reduce((s, t) => s + t.members.length, 0);
+    const raw = teams.reduce((s, t) => s + t.members.length * teamEfficiency(t.members.length, p.pairCost), 0);
+    return (raw * orgEfficiency(teams.length, p.crossTeamCost)) / n;
+  })();
 
   const hurt = (t: Team, amount: number) => {
     t.cohesion = Math.max(COHESION_MIN, t.cohesion - amount);
@@ -218,10 +231,10 @@ export function simulate(p: Params, seed = p.seed): RunResult {
       const skill = t.members.reduce((s, m) => s + m.skill, 0);
       const out = skill * t.cohesion * teamEfficiency(t.members.length, p.pairCost);
       raw += out;
-      snap.push({ id: t.id, size: t.members.length, stage: stageOf(t.cohesion), output: out });
+      snap.push({ id: t.id, size: t.members.length, stage: stageOf(t.cohesion), output: out / reference });
     }
     const cost = teams.reduce((s, t) => s + t.members.reduce((c, m) => c + (m.senior ? p.seniorCost : 1), 0), 0);
-    months.push({ month, headcount: headcount(), output: raw * orgEfficiency(teams.length, p.crossTeamCost) * morale(month), teams: teams.length, cost });
+    months.push({ month, headcount: headcount(), output: (raw * orgEfficiency(teams.length, p.crossTeamCost) * morale(month)) / reference, teams: teams.length, cost });
     snapshots.push(snap);
   };
 
