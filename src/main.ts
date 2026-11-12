@@ -264,6 +264,13 @@ $<HTMLInputElement>("month-slider").addEventListener("input", (e) => {
   s.dataset.follow = s.value === s.max ? "1" : "0";
   renderTeams();
 });
+$("open-advanced").addEventListener("click", (e) => {
+  e.preventDefault();
+  const adv = document.querySelector<HTMLDetailsElement>("#controls details");
+  if (!adv) return;
+  adv.open = true;
+  adv.scrollIntoView({ behavior: "smooth", block: "start" });
+});
 $("share").addEventListener("click", async () => {
   const b = $("share");
   try {
