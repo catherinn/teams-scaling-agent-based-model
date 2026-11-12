@@ -69,4 +69,21 @@ describe("model", () => {
     // Output falls by more than the headcount cut: survivors absorb the disruption.
     expect(i.layoff!.outputCut).toBeGreaterThan(i.layoff!.headcountCut);
   });
+
+  it("turnover with replacements keeps headcount but costs output", () => {
+    const p = P({ startHeadcount: 100, established: true, hiresPerYear: 0, attritionPerYear: 40, months: 36 });
+    const last = runMany(p).bands[36];
+    expect(last.headcount).toBeGreaterThan(85);
+    expect(last.median / last.headcount).toBeLessThan(0.8);
+  });
+
+  it("healthy turnover does not hurt the atmosphere, high turnover does", () => {
+    const eff = (a: number) => {
+      const p = P({ startHeadcount: 100, established: true, hiresPerYear: 0, attritionPerYear: a, months: 36 });
+      const b = runMany(p).bands[36];
+      return b.median / b.headcount;
+    };
+    expect(eff(10)).toBeGreaterThan(0.9);
+    expect(eff(45)).toBeLessThan(eff(10) - 0.15);
+  });
 });

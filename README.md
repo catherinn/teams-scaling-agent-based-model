@@ -29,7 +29,7 @@ An agent-based model: every person and every team is simulated month by month, m
 - **People ramp up.** New hires start at 20% (junior) or 40% (senior) productivity. Seniors reach full speed in about 6 months. Juniors reach 60% in about 6 months, then grow to full speed over about 2 years. Ramp-up slows when a team has more newcomers than experienced people.
 - **Teams gel, and change resets them.** Teams move through Tuckman's stages (forming, storming, norming, performing) in about 10 months. Every joiner or leaver, every split and every merge knocks a team back.
 - **Bigger means more overhead.** Communication paths grow as n(n-1)/2, so a team's output peaks at around 10-12 people. Teams split when they reach the split size and merge when they shrink below the minimum. Each extra team adds coordination overhead.
-- **Layoffs cost more than salaries.** Leavers take knowledge with them, survivors lose motivation for about a year, and more people leave voluntarily. Layoff scenarios are compared with the same organisation without the layoff.
+- **Leaving costs more than a salary.** Leavers take knowledge with them. Replacements take months to hire, then ramp up. Turnover above a healthy level (10%/year by default) hurts the motivation of everyone who stays. After a layoff, survivors lose motivation for about a year and more people leave. Layoff scenarios are compared with the same organisation without the layoff.
 
 Output is measured against your organisation today: an established team starts at 100%, so the model never claims to know how productive you are now, only what a change costs from there. A brand-new team starts lower because it still has to ramp up and gel.
 

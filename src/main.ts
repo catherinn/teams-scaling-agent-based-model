@@ -17,7 +17,7 @@ interface Control {
 const pct = (v: number) => `${v}%`;
 const months = (v: number) => (v === 0 ? "none" : `month ${v}`);
 
-const GROUPS: { title: string; advanced?: boolean; controls: (Control | { key: "established"; label: string; toggle: true; help?: string })[] }[] = [
+const GROUPS: { title: string; advanced?: boolean; controls: (Control | { key: "established" | "backfill"; label: string; toggle: true; help?: string })[] }[] = [
   {
     title: "Your organisation",
     controls: [
@@ -31,7 +31,8 @@ const GROUPS: { title: string; advanced?: boolean; controls: (Control | { key: "
     controls: [
       { key: "hiresPerYear", label: "New hires per year", min: 0, max: 300, step: 1 },
       { key: "seniorShare", label: "Seniors among new hires", min: 0, max: 100, step: 5, format: pct },
-      { key: "attritionPerYear", label: "Staff turnover per year", min: 0, max: 50, step: 1, format: pct, help: "Share of people who leave voluntarily each year." },
+      { key: "attritionPerYear", label: "Staff turnover per year", min: 0, max: 50, step: 1, format: pct, help: "Share of people who leave voluntarily each year. Above about 10%, the atmosphere suffers." },
+      { key: "backfill", label: "Replace people who leave", toggle: true, help: "Each leaver is replaced by a new hire after the vacancy is filled." },
     ],
   },
   {
@@ -56,6 +57,9 @@ const GROUPS: { title: string; advanced?: boolean; controls: (Control | { key: "
       { key: "juniorRampMonths", label: "Junior ramp-up (months)", min: 1, max: 18, step: 1 },
       { key: "juniorToSeniorMonths", label: "Junior to full speed (months)", min: 6, max: 48, step: 1 },
       { key: "knowledgeLoss", label: "Knowledge lost per leaver", min: 0, max: 1, step: 0.05, format: (v) => `${Math.round(v * 100)}%`, help: "Share of a leaver's capability their teammates must rebuild." },
+      { key: "backfillMonths", label: "Months to fill a vacancy", min: 0, max: 12, step: 1 },
+      { key: "healthyTurnover", label: "Healthy turnover", min: 0, max: 30, step: 1, format: (v) => `${v}%/yr`, help: "Turnover below this level does not affect the atmosphere." },
+      { key: "turnoverMoraleCost", label: "Atmosphere cost of turnover", min: 0, max: 1.5, step: 0.05, format: (v) => `${Math.round(v * 10)}% per +10 pts`, help: "Output lost by everyone who stays, per 10 points of yearly turnover above the healthy level." },
       { key: "moraleDrop", label: "Survivor morale drop", min: 0, max: 40, step: 1, format: pct, help: "Output lost by remaining staff right after a layoff, recovering over 12 months." },
       { key: "survivorAttritionBoost", label: "Extra turnover after a layoff", min: 0, max: 40, step: 1, format: (v) => `+${v}%/yr` },
       { key: "seniorCost", label: "Senior salary vs junior", min: 1, max: 3, step: 0.1, format: (v) => `${v.toFixed(1)}×` },
@@ -69,7 +73,7 @@ const PRESETS: { name: string; p: Partial<Params> }[] = [
   { name: "Hypergrowth", p: { startHeadcount: 20, established: true, hiresPerYear: 80, seniorShare: 40, attritionPerYear: 12, layoffMonth: 0, layoffPercent: 0, months: 48 } },
   { name: "Hire fast, then cut", p: { startHeadcount: 20, established: true, hiresPerYear: 80, seniorShare: 40, attritionPerYear: 12, layoffMonth: 24, layoffPercent: 25, months: 48 } },
   { name: "20% layoff", p: { startHeadcount: 100, established: true, hiresPerYear: 10, seniorShare: 50, attritionPerYear: 10, layoffMonth: 6, layoffPercent: 20, months: 36 } },
-  { name: "Hiring freeze", p: { startHeadcount: 100, established: true, hiresPerYear: 0, seniorShare: 50, attritionPerYear: 10, layoffMonth: 0, layoffPercent: 0, months: 36 } },
+  { name: "Hiring freeze", p: { startHeadcount: 100, established: true, backfill: false, hiresPerYear: 0, seniorShare: 50, attritionPerYear: 10, layoffMonth: 0, layoffPercent: 0, months: 36 } },
   { name: "Juniors only", p: { startHeadcount: 5, established: false, hiresPerYear: 20, seniorShare: 0, attritionPerYear: 0, layoffMonth: 0, layoffPercent: 0, months: 48 } },
 ];
 
@@ -183,7 +187,7 @@ function render(base?: Summary) {
   const i = insights(params, summary, base);
   const last = summary.bands[summary.bands.length - 1];
 
-  let headline = `After ${params.months} months you have <b>${fmt(i.finalHeadcount)} people</b>, but they deliver what <b>${fmt(i.finalOutput, 1)}</b> people at today's productivity would: <b>${fmt(i.efficiency * 100)}%</b> of what headcount suggests.`;
+  let headline = `After ${params.months} months you have <b>${fmt(i.finalHeadcount)} people</b>, ${i.efficiency >= 1 ? "and" : "but"} they deliver what <b>${fmt(i.finalOutput, 1)}</b> people at today's productivity would: <b>${fmt(i.efficiency * 100)}%</b> of what headcount suggests.`;
   if (i.layoff) {
     headline = `Three months after the layoff you have <b>${fmt(i.layoff.headcountCut)}% fewer people</b> than without it, but <b>${fmt(i.layoff.outputCut)}% less output</b>. ` + headline;
   }

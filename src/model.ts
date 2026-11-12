@@ -36,6 +36,10 @@ export interface Params {
   juniorRampMonths: number;
   juniorToSeniorMonths: number; // months for a junior to reach full productivity
   attritionPerYear: number; // 0..100 %
+  backfill: boolean; // replace people who leave voluntarily
+  backfillMonths: number; // months until a vacancy is filled
+  healthyTurnover: number; // % per year that does not affect the atmosphere
+  turnoverMoraleCost: number; // output lost per point of yearly turnover above the healthy level (0.5 = 10 points -> 5%)
   layoffMonth: number; // 0 = no layoff
   layoffPercent: number; // 0..100
   survivorAttritionBoost: number; // extra attrition, % per year, for 12 months after a layoff
@@ -63,6 +67,10 @@ export const DEFAULTS: Params = {
   juniorRampMonths: 6,
   juniorToSeniorMonths: 24,
   attritionPerYear: 0,
+  backfill: true,
+  backfillMonths: 3,
+  healthyTurnover: 10,
+  turnoverMoraleCost: 0.5,
   layoffMonth: 0,
   layoffPercent: 0,
   survivorAttritionBoost: 15,
@@ -218,8 +226,23 @@ export function simulate(p: Params, seed = p.seed): RunResult {
   const monthlyRate = (perYear: number) => 1 - Math.pow(1 - Math.min(99.9, perYear) / 100, 1 / 12);
   let boostUntil = -1;
   let layoffAt = -1;
-  const morale = (month: number) =>
+  const layoffMorale = (month: number) =>
     layoffAt < 0 || month - layoffAt >= 12 ? 1 : 1 - (p.moraleDrop / 100) * (1 - (month - layoffAt) / 12);
+
+  // Atmosphere: voluntary turnover over the last 12 months (annualised) above a healthy
+  // level lowers the motivation of everyone who stays.
+  const leftPerMonth: number[] = [];
+  const headPerMonth: number[] = [];
+  const turnoverRate = () => {
+    const k = Math.min(12, leftPerMonth.length);
+    if (k === 0) return 0;
+    const left = leftPerMonth.slice(-k).reduce((a, b) => a + b, 0);
+    const avgHead = headPerMonth.slice(-k).reduce((a, b) => a + b, 0) / k;
+    return avgHead > 0 ? ((left / avgHead) * 12) / k : 0;
+  };
+  const climate = () => 1 - p.turnoverMoraleCost * Math.max(0, turnoverRate() - p.healthyTurnover / 100);
+  const morale = (month: number) => Math.max(0.5, layoffMorale(month) * climate());
+  const vacancies: number[] = []; // month each pending replacement starts
 
   const months: MonthResult[] = [];
   const snapshots: TeamSnapshot[][] = [];
@@ -275,19 +298,34 @@ export function simulate(p: Params, seed = p.seed): RunResult {
 
     // 3. Voluntary departures.
     const rate = monthlyRate(p.attritionPerYear + (month <= boostUntil ? p.survivorAttritionBoost : 0));
+    const headBefore = headcount();
+    let left = 0;
     if (rate > 0) {
       for (const t of teams) {
         for (let i = t.members.length - 1; i >= 0; i--) {
-          if (headcount() > 1 && rand() < rate) removePerson(t, i);
+          if (headcount() > 1 && rand() < rate) {
+            removePerson(t, i);
+            left++;
+            if (p.backfill) vacancies.push(month + p.backfillMonths);
+          }
         }
       }
       removeEmptyAndMergeSmall();
     }
+    leftPerMonth.push(left);
+    headPerMonth.push(headBefore);
 
     // 4. Hiring, spread evenly over the year (fraction carried to next month).
     hireCarry += p.hiresPerYear / 12;
     let hires = Math.floor(hireCarry + 1e-9);
     hireCarry -= hires;
+    // Replacements whose vacancy is filled this month.
+    for (let i = vacancies.length - 1; i >= 0; i--) {
+      if (vacancies[i] <= month) {
+        vacancies.splice(i, 1);
+        hires++;
+      }
+    }
     while (hires-- > 0) {
       if (teams.length === 0) teams.push({ id: nextId++, members: [], cohesion: COHESION_NEW });
       const t = pick(teams);
