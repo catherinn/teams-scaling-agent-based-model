@@ -123,3 +123,8 @@ aside details[open] summary { margin-bottom: 8px; }
 .feedback .status { margin: 0; font-size: 14px; color: var(--muted); }
 .caveat { margin-top: 18px !important; padding: 12px 14px; background: #fff7ed; border-radius: 10px; }
 .credits { color: var(--muted); font-size: 13px; margin: 0 0 32px; }
+
+.titlebar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
+.gh { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 999px; padding: 6px 14px; }
+.gh:hover { background: rgba(255, 255, 255, 0.1); }
+.credits a { color: inherit; }
