@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { DEFAULTS, insights, runMany, simulate, teamEfficiency, type Params, withoutLayoff } from "../src/model";
 
-const P = (o: Partial<Params> = {}): Params => ({ ...DEFAULTS, runs: 30, ...o });
+// Most tests start from a brand-new team (the original NetLogo setup).
+const P = (o: Partial<Params> = {}): Params => ({ ...DEFAULTS, established: false, runs: 30, ...o });
 
 describe("model", () => {
   it("is deterministic for a seed", () => {

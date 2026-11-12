@@ -4,16 +4,19 @@ const W = 760;
 const H = 340;
 const M = { t: 16, r: 16, b: 36, l: 48 };
 
-function niceMax(v: number) {
-  if (v <= 0) return 1;
-  const p = Math.pow(10, Math.floor(Math.log10(v)));
-  for (const f of [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10]) if (f * p >= v) return f * p;
+/** Round tick step (1, 2, 2.5 or 5 × 10^k) giving about 4 intervals up to v. */
+function niceStep(v: number) {
+  const raw = Math.max(v, 1) / 4;
+  const p = Math.pow(10, Math.floor(Math.log10(raw)));
+  for (const f of [1, 2, 2.5, 5, 10]) if (f * p >= raw) return Math.max(1, f * p);
   return 10 * p;
 }
 
 export function drawChart(el: HTMLElement, bands: Band[], base: Band[] | undefined, layoffMonth: number) {
   const n = bands.length - 1;
-  const ymax = niceMax(Math.max(...bands.map((b) => Math.max(b.headcount, b.p90)), ...(base ?? []).map((b) => b.headcount)));
+  const top = Math.max(...bands.map((b) => Math.max(b.headcount, b.p90)), ...(base ?? []).map((b) => b.headcount));
+  const step = niceStep(top);
+  const ymax = Math.ceil(top / step - 1e-9) * step;
   const x = (m: number) => M.l + (m / n) * (W - M.l - M.r);
   const y = (v: number) => H - M.b - (v / ymax) * (H - M.t - M.b);
   const line = (pts: [number, number][]) => pts.map(([a, b], i) => `${i ? "L" : "M"}${x(a).toFixed(1)},${y(b).toFixed(1)}`).join("");
@@ -23,7 +26,7 @@ export function drawChart(el: HTMLElement, bands: Band[], base: Band[] | undefin
     [...bands].reverse().map((b) => `L${x(b.month).toFixed(1)},${y(b.p10).toFixed(1)}`).join("") +
     "Z";
 
-  const yTicks = Array.from({ length: 5 }, (_, i) => (ymax / 4) * i);
+  const yTicks = Array.from({ length: Math.round(ymax / step) + 1 }, (_, i) => i * step);
   const xStep = n <= 24 ? 3 : n <= 48 ? 6 : 12;
   const xTicks = Array.from({ length: Math.floor(n / xStep) + 1 }, (_, i) => i * xStep);
 

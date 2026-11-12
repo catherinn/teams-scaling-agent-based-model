@@ -22,7 +22,7 @@ const GROUPS: { title: string; advanced?: boolean; controls: (Control | { key: "
     title: "Your organisation",
     controls: [
       { key: "startHeadcount", label: "People today", min: 1, max: 500, step: 1 },
-      { key: "established", label: "Already working together", toggle: true, help: "On: an established, ramped-up organisation. Off: a brand-new team." },
+      { key: "established", label: "Existing team", toggle: true, help: "On: your team as it is today, counted as 100%. Off: everyone is newly hired today and starts from scratch." },
       { key: "months", label: "Time horizon", min: 12, max: 96, step: 6, format: (v) => `${v} months` },
     ],
   },
