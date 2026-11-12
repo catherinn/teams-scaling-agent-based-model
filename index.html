@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Scaling: what growing or cutting really does to team output</title>
+    <meta name="description" content="Scaling up or scaling down, every change costs your team output. Simulate what hiring sprees and layoffs really do." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%235b4bdb'/><path d='M3 12 L7 7 L10 9 L13 4' stroke='white' stroke-width='2' fill='none'/></svg>" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>Team Scaling</h1>
+        <p class="tagline">Scaling up or scaling down, every change costs your team output. See how much.</p>
+        <div class="intro">
+          <div>
+            <h2>⬆ Scaling up</h2>
+            <p>New people need months to ramp up, and every joiner sets their team back. Teams split as they grow, and coordination eats more time. Hire too fast and output per person collapses.</p>
+          </div>
+          <div>
+            <h2>⬇ Scaling down</h2>
+            <p>Layoffs remove more output than headcount. Knowledge leaves with people, teams are merged, survivors lose motivation and more people quit.</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="presets" aria-label="Scenarios">
+        <span class="label">Try a scenario:</span>
+        <div id="presets"></div>
+      </section>
+
+      <div class="layout">
+        <aside id="controls" aria-label="Parameters"></aside>
+
+        <section class="results">
+          <p id="headline" class="headline" aria-live="polite"></p>
+          <div id="cards" class="cards"></div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Output over time</h2>
+              <div class="legend">
+                <span><i class="sw sw-head"></i>Headcount (what leaders expect)</span>
+                <span><i class="sw sw-real"></i>Real output</span>
+                <span id="legend-base" hidden><i class="sw sw-base"></i>Without the layoff</span>
+              </div>
+            </div>
+            <div id="chart" class="chart"></div>
+            <p class="note">Real output: median of <span id="nruns"></span> simulated runs. The shaded band covers 80% of runs. 1.0 = one fully productive person.</p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <h2>Teams in month <span id="team-month"></span></h2>
+              <div class="legend">
+                <span><i class="sw st-forming"></i>Forming</span>
+                <span><i class="sw st-storming"></i>Storming</span>
+                <span><i class="sw st-norming"></i>Norming</span>
+                <span><i class="sw st-performing"></i>Performing</span>
+              </div>
+            </div>
+            <input id="month-slider" type="range" min="0" value="0" aria-label="Month to show" />
+            <div id="teams" class="teams"></div>
+            <p class="note">One typical run. Each box is a team, each dot a person. Colour shows the team's stage (Tuckman): teams gel over time and fall back when people join or leave, or when teams are split or merged.</p>
+          </div>
+
+          <div class="actions">
+            <button id="share" type="button">Copy link to this scenario</button>
+            <button id="reset" type="button" class="ghost">Reset</button>
+          </div>
+        </section>
+      </div>
+
+      <section class="explain">
+        <h2>How the model works</h2>
+        <div class="grid">
+          <div>
+            <h3>People ramp up</h3>
+            <p>New hires start at 20% (junior) or 40% (senior) productivity. Seniors reach full speed in about 6 months. Juniors reach 60% in about 6 months, then grow to full speed over roughly 2 years. Ramp-up slows when a team has more newcomers than experienced people to learn from.</p>
+          </div>
+          <div>
+            <h3>Teams gel, and change resets them</h3>
+            <p>Every team moves through forming, storming, norming and performing (Tuckman, 1965) in about 10 months. Every person who joins or leaves knocks the team back. Splitting a team that got too big, or merging teams that got too small, knocks it back further.</p>
+          </div>
+          <div>
+            <h3>Bigger means more overhead</h3>
+            <p>Communication paths grow as n(n−1)/2, so a team's output peaks at around 10–12 people (diminishing returns, Ricardo 1817; Brooks 1975). Coordinating many teams costs extra on top.</p>
+          </div>
+          <div>
+            <h3>Layoffs cost more than salaries</h3>
+            <p>Leavers take knowledge with them, which their teammates must rebuild. After a layoff, survivors lose motivation for about a year and more people leave voluntarily. The chart compares this with the same company without the layoff.</p>
+          </div>
+        </div>
+        <p class="caveat">This is a thinking tool, not a forecast. Every assumption above can be changed under <em>Advanced assumptions</em>. Use it to make the cost of change visible, then argue about the numbers with real data.</p>
+        <p class="credits">Based on the agent-based NetLogo model “Product Team Scaling” by K. Lechner (2023). © 2023-2026 K. Lechner. All rights reserved.</p>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

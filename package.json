@@ -1,0 +1,20 @@
+{
+  "name": "team-scaling",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Scaling up or scaling down, every change costs your team output.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "deploy": "npm test && npm run build && touch dist/.nojekyll && git -C dist init -q -b gh-pages && git -C dist add -A && git -C dist commit -q -m deploy && git -C dist push -f -q \"$(git remote get-url origin)\" gh-pages && rm -rf dist/.git"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
+  }
+}

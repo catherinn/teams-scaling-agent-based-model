@@ -1,127 +1,52 @@
-# teams-scaling-agent-based-model
+# Team Scaling
 
-## INSTALLING (local)
-* Download Netlogo 6.3.0 (https://ccl.northwestern.edu/netlogo/download.shtml)
-* Open the project file in Netlogo
+**Scaling up or scaling down, every change costs your team output.** A simulator that shows what hiring sprees, layoffs and reorgs really do to what a product organisation delivers.
 
-  
+Leaders often plan as if 50 people produce 50 people's worth of work. In reality, new hires need months to ramp up, teams need time to gel, every joiner or leaver sets a team back, and big organisations spend more and more time coordinating. This tool makes that gap visible, for HR, founders, engineering leaders, or anyone who has to argue that "just hire more" or "just cut 20%" is not free.
 
-## WHAT IS IT?
+![Screenshot](docs/screenshot.png)
 
-This model of scaling product development teams illustrates the behaviour of how adding new team members into a startup environment (which usually starts with one team) negatively impacts the output created by the whole product development department.
-Product development teams are usually cross-functional teams of individuals from different areas (product manager, UX, developers etc.) that work in an agile environment. 
+## Use it
 
-The exact rules are defined based on my empirical experience working in various companies of different sizes and incorporate 2 well-known theoretical concepts:
+Open the site, pick a scenario (hypergrowth, 20% layoff, hiring freeze, juniors only, ...) or move the sliders. Every scenario has its own link, so you can share the exact setup you are looking at.
 
--  Classification of a group's life cycle - proposed by psychologist Bruce Tuckman in 1965
-- The law of diminishing marginal productivity/returns -  first conceptualized by David Ricardo in his book "On the Principles of Political Economy and Taxation," published in 1817
+## Run locally
 
+```bash
+npm install
+npm run dev     # local dev server
+npm test        # model tests
+npm run build   # static site in dist/
+npm run deploy  # build and publish to the gh-pages branch
+```
 
+The site is static and has no backend or tracking. It is served by GitHub Pages from the `gh-pages` branch; `npm run deploy` rebuilds and publishes it.
 
-## HOW IT WORKS
+## The model
 
-The seniority slider enables us to set the % of senior vs junior team members. This allows for experimenting with finding the right balance between output and cost and it can also help companies find the right strategy (e.g. some startups start with hiring only juniors while expecting the same level of output as by hiring seniors).
+An agent-based model: every person and every team is simulated month by month, many times with different random seeds, and the chart shows the median and the 10-90% range.
 
-On setup, 1 team is created with 5 members. They have just started to work together, so they are in the forming stage, which is color-coded in the patch color around the team. The number 5 team members were chosen arbitrarily as a minimum where a team is able to build software together given its cross-functional nature.
+- **People ramp up.** New hires start at 20% (junior) or 40% (senior) productivity. Seniors reach full speed in about 6 months. Juniors reach 60% in about 6 months, then grow to full speed over about 2 years. Ramp-up slows when a team has more newcomers than experienced people.
+- **Teams gel, and change resets them.** Teams move through Tuckman's stages (forming, storming, norming, performing) in about 10 months. Every joiner or leaver, every split and every merge knocks a team back.
+- **Bigger means more overhead.** Communication paths grow as n(n-1)/2, so a team's output peaks at around 10-12 people. Teams split when they reach the split size and merge when they shrink below the minimum. Each extra team adds coordination overhead.
+- **Layoffs cost more than salaries.** Leavers take knowledge with them, survivors lose motivation for about a year, and more people leave voluntarily. Layoff scenarios are compared with the same organisation without the layoff.
 
-The team grows by randomly adding new team member(s) to the existing teams, on every tick. A tick represents a time unit, which in this model is 1 month.
+Every assumption is a parameter under *Advanced assumptions* in the UI, and in `DEFAULTS` in [`src/model.ts`](src/model.ts). **It is a thinking tool, not a forecast.**
 
-Once the size of one of the teams turns 10, even though the overall productivity still grows by adding a new team member, the marginal output is very small and the overall output starts decreasing soon after. Due to this, we split the team into 2 equal teams of 5 members.
+## Origins
 
-The agents are assembled into individual teams (agentsets), and each team has a different color of agents.
+This started as a NetLogo model built in 2023. It is kept unchanged in [`netlogo/`](netlogo/), together with its original documentation ([`netlogo/README.md`](netlogo/README.md)); open it with [NetLogo](https://ccl.northwestern.edu/netlogo/). [`docs/model-changes.md`](docs/model-changes.md) explains what changed in this version and why.
 
-To visually indicate the performance of the team, we are using an adapted version of the Tuckman's classification of the team life cycle (forming-storming-norming-performing), and for our modelling purposes, we are using the following criteria:
+Theory it builds on:
 
-- time of the team together without interruption and interruption causing a penalty for the teams that were interrupted,
-- individual output based on seniority,
-- the number of team members in the team,
-- adjusted by using exponential decay to account for the  Law of diminishing marginal productivity. Based on some experimentation with different values, the value of decay used will be 6%.
+- Tuckman, B. W. (1965). *Developmental sequence in small groups.*
+- Ricardo, D. (1817). *On the Principles of Political Economy and Taxation* (diminishing returns).
+- Brooks, F. P. (1975). *The Mythical Man-Month* (communication overhead).
 
-A total-output-team score computed based on the criteria above is translated into the color of the patches as follows: 
+## Feedback
 
-- forming: light grey
-- storming: light yellow 
-- norming: light orange
-- performing: light purple
+Feedback and real-world data to calibrate the defaults are welcome. Please open an issue.
 
+## License
 
-
-## HOW TO USE IT
-
-Click the SETUP button to start with a single team. Click GO to add team members. 1 tick represents 1 month.
-
-### Parameters
-
-- senioritySlider - represents the % of seniors vs. juniors based on the strategy of the company (setting a certain % represents the % of seniors from the new joiners)
-- turtleGrowthSlider - represents the absolute number of agents (new joiners) that will be added over 1 year (12 months)
-
-### Plots
--  perceived output vs. real output
-
-### Other outputs
-- number of teams
-- ticks (months)
-- number of agents (members of product development)
-
-
-
-## THINGS TO NOTICE
-
-- the perceived output is what most leaders in organizations naively think when adding new team members.
-- the real output incorporating how adding new team members disturbs the existing teams and applying the rule of diminishing marginal productivity represents a simplified version of the reality.
-- having only senior team members logically creates much more output, which is how most of startup companies start.
-- high growth means that the teams will be very far from their potential and will only truly start growing after multiple years of working together. Try this by setting turtleGrowthSlider = 20. In this case, the teams will be unfunctional with very low output for 3 years and will start picking up in productivity after that.
-- one team without new team members can be surprisingly effective in a very short time. Of course, there is a limit to their max output. Try this with turtleGrowthSlider = 0.
-- see how randomly the real output behaves with a low number of ticks. This is because of the low number of teams, where it makes a huge difference to which team the new joiners are added.
-
-
-
-## THINGS TO TRY
-
-- set the turtleGrowthSlider = 20 and see how long the teams will be unfunctional
-- set the turtleGrowthSlide = 0 and see how quickly the teams will become productive. Also, see the limit in their output.
-- play around with the different % of senior agents and notice how the output changes.
-
-
-
-## EXTENDING THE MODEL
-
-There is a potential to further grow this model to account for various other factors that can influence the team performance:
-
-- adjust the growth rate of the company for every year -> currently we assume , there is a constant yearly growth as per the turtleGrowthSlider.
-- considering further collaboration based on previous links between individuals. 
-- fluctuation rate that can be influenced by
-	- company culture,
-	- growth possibilities (e.g. for seniors the growth opportunities are often limited and mentoring juniors can be one of the motivations to stay and grow).
-- considering different timeframes for transitioning between the performance stages based on Tuckman's definition.
-	- currently, we consider transitioning from one stage to another after 4 ticks (4 months), however, this can vary greatly based on the investments of the company into levelling up the teams. Also transitioning from storming to norming and later performing can take much more time, and is also dependent on previous links between the team members (as already mentioned above) and complementary skills.
-- accounting for the last stage defined by Tuckman  = adjourning in the form of shuffling around teams in certain periods, which can greatly improve the motivation of team members for which after the performance stage, the output might start declining as the individuals lack growth opportunities.
-- the concept of accumulating tech debt due to the inexperience of junior team members if the proportion of juniors vs seniors is not well balanced.
-- incorporating the growth of team members from juniors to seniors -> the potential model does not account for this fact properly, only rudimentarily in allowing juniors to organically achieve the max output points.
-
-## NETLOGO FEATURES
-
-- working with individual agents and grouping them into agentsets 
-- grouping the agentsets together visually on the interface and coloring the patches based on the output of the agentset
-- the final output depending on the activity of agentset and individual agents as well as their inactivity with the help of a counter logic
-- the logic of adding a selected total number of agents over a defined period randomly
-
-
-## RELATED MODELS
-
-Team Assembly - a model of collaboration networks illustrates how the behavior of individuals in assembling small teams for short-term projects can give rise to a variety of large-scale network structures over time 
-
-## CREDITS AND REFERENCES
-
-If you mention this model or the NetLogo software in a publication, we ask that you include the citations below.
-
-For the model itself:
-Lechner K., 2023. NetLogo Product Team Scaling model. 
-
-Please cite the NetLogo software as:
-
-Wilensky, U. (1999). NetLogo. http://ccl.northwestern.edu/netlogo/. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL.
-
-## COPYRIGHT AND LICENSE
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-sa/4.0 or send a letter to Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
-
+Copyright © 2023-2026 K. Lechner. All rights reserved. The code is public for viewing and reference only; see [LICENSE](LICENSE). You are welcome to use the hosted simulator.
