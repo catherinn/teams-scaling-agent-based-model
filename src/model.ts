@@ -52,9 +52,9 @@ export interface Params {
 
 export const DEFAULTS: Params = {
   months: 48,
-  startHeadcount: 5,
+  startHeadcount: 20,
   established: true,
-  hiresPerYear: 12,
+  hiresPerYear: 0,
   seniorShare: 50,
   splitAt: 10,
   minTeamSize: 3,

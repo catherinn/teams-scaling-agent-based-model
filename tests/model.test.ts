@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { DEFAULTS, insights, runMany, simulate, teamEfficiency, type Params, withoutLayoff } from "../src/model";
 
 // Most tests start from a brand-new team (the original NetLogo setup).
-const P = (o: Partial<Params> = {}): Params => ({ ...DEFAULTS, established: false, runs: 30, ...o });
+const P = (o: Partial<Params> = {}): Params => ({ ...DEFAULTS, established: false, startHeadcount: 5, hiresPerYear: 12, runs: 30, ...o });
 
 describe("model", () => {
   it("is deterministic for a seed", () => {
@@ -86,5 +86,13 @@ describe("model", () => {
     };
     expect(eff(10)).toBeGreaterThan(0.9);
     expect(eff(45)).toBeLessThan(eff(10) - 0.15);
+  });
+
+  it("the default opens on a team where nothing changes", () => {
+    const p = { ...DEFAULTS, runs: 5 };
+    for (const b of runMany(p).bands) {
+      expect(b.headcount).toBe(DEFAULTS.startHeadcount);
+      expect(b.median).toBeCloseTo(DEFAULTS.startHeadcount, 6);
+    }
   });
 });

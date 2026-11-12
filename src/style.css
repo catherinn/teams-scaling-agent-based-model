@@ -135,3 +135,6 @@ aside details[open] summary { margin-bottom: 8px; }
 .info-pop { display: none; position: absolute; z-index: 10; top: 26px; left: -10px; width: min(320px, 80vw); padding: 10px 12px; border-radius: 10px; background: var(--ink); color: #fff; font: 400 13px/1.45 Inter, system-ui, sans-serif; letter-spacing: 0; text-align: left; box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18); }
 .info-pop::before { content: ""; position: absolute; top: -6px; left: 14px; border: 6px solid transparent; border-top: 0; border-bottom-color: var(--ink); }
 .info:hover .info-pop, .info:focus .info-pop, .info:focus-within .info-pop { display: block; }
+
+.headline.invite { border-left-color: var(--head); }
+.cards[hidden] { display: none; }

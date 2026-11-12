@@ -193,7 +193,14 @@ function render(base?: Summary) {
   if (i.layoff) {
     headline = `Three months after the layoff you have <b>${fmt(i.layoff.headcountCut)}% fewer people</b> than without it, but <b>${fmt(i.layoff.outputCut)}% less output</b>. ` + headline;
   }
+  // Nothing changes: invite the visitor instead of showing a result they did not ask for.
+  const nothingChanges =
+    params.established && params.hiresPerYear === 0 && params.attritionPerYear === 0 && !(params.layoffMonth > 0 && params.layoffPercent > 0);
+  if (nothingChanges) {
+    headline = `Your team of <b>${fmt(params.startHeadcount)} people</b> delivers <b>100%</b> today. Now change something: hire, let people go, or pick a scenario above.`;
+  }
   $("headline").innerHTML = headline;
+  $("headline").classList.toggle("invite", nothingChanges);
 
   const cards: [string, string, string][] = [
     ["Headcount", fmt(i.finalHeadcount), `in month ${params.months}`],
@@ -205,6 +212,7 @@ function render(base?: Summary) {
   if (i.layoff) {
     cards.push(["Layoff: output lost", fmt(i.layoff.lostPersonMonths), `person-months vs ${fmt(i.layoff.savedPersonMonths)} salary-months saved`]);
   }
+  $("cards").hidden = nothingChanges;
   $("cards").innerHTML = cards.map(([t, v, s]) => `<div class="card"><div class="t">${t}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("");
 
   $("nruns").textContent = String(params.runs);

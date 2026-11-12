@@ -16,7 +16,8 @@ export function drawChart(el: HTMLElement, bands: Band[], base: Band[] | undefin
   const n = bands.length - 1;
   const top = Math.max(...bands.map((b) => Math.max(b.headcount, b.p90)), ...(base ?? []).map((b) => b.headcount));
   const step = niceStep(top);
-  const ymax = Math.ceil(top / step - 1e-9) * step;
+  // Leave headroom so a line at the maximum does not sit on the top edge.
+  const ymax = Math.ceil((top * 1.04) / step - 1e-9) * step;
   const x = (m: number) => M.l + (m / n) * (W - M.l - M.r);
   const y = (v: number) => H - M.b - (v / ymax) * (H - M.t - M.b);
   const line = (pts: [number, number][]) => pts.map(([a, b], i) => `${i ? "L" : "M"}${x(a).toFixed(1)},${y(b).toFixed(1)}`).join("");
