@@ -33,6 +33,8 @@ An agent-based model: every person and every team is simulated month by month, m
 
 Output is measured against your organisation today: an established team starts at 100%, so the model never claims to know how productive you are now, only what a change costs from there. A brand-new team starts lower because it still has to ramp up and gel.
 
+The full description, with every rule and default, is in [`docs/how-the-model-works.md`](docs/how-the-model-works.md).
+
 Every assumption is a parameter under *Advanced assumptions* in the UI, and in `DEFAULTS` in [`src/model.ts`](src/model.ts). **It is a thinking tool, not a forecast.**
 
 ## Origins

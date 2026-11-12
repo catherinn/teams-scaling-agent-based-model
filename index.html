@@ -49,7 +49,7 @@
               </div>
             </div>
             <div id="chart" class="chart"></div>
-            <p class="note">Real output: median of <span id="nruns"></span> simulated runs. The shaded band covers 80% of runs. Output is measured in people at today's productivity: an established team starts at 100%.</p>
+            <p class="note">We simulate your organisation <span id="nruns"></span> times. The line is the typical result, the shaded area the likely range. Output is counted in people working as productively as your team does today.</p>
           </div>
 
           <div class="panel">
@@ -64,7 +64,7 @@
             </div>
             <input id="month-slider" type="range" min="0" value="0" aria-label="Month to show" />
             <div id="teams" class="teams"></div>
-            <p class="note">One typical run. Each box is a team, each dot a person. Colour shows the team's stage (Tuckman): teams gel over time and fall back when people join or leave, or when teams are split or merged.</p>
+            <p class="note">Each box is a team, each dot a person. The colour shows how well the team works together: it improves over time and drops when people join or leave, or when teams are split or merged.</p>
           </div>
 
           <div class="actions">
@@ -75,28 +75,62 @@
       </div>
 
       <section class="explain">
-        <h2>How the model works</h2>
+        <h2>How it works, in plain words</h2>
         <div class="grid">
-          <div>
-            <h3>People ramp up</h3>
-            <p>New hires start at 20% (junior) or 40% (senior) productivity. Seniors reach full speed in about 6 months. Juniors reach 60% in about 6 months, then grow to full speed over roughly 2 years. Ramp-up slows when a team has more newcomers than experienced people to learn from.</p>
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12C12 7 8 5 4 5c0 5 3 7 8 7z"/><path d="M12 14c0-4 3-6 8-6 0 4-3 6-8 6z"/></svg></div>
+            <h3>New people need time</h3>
+            <p>Nobody is fully productive on day one. Experienced hires need about half a year, juniors up to two years.</p>
           </div>
-          <div>
-            <h3>Teams gel, and change resets them</h3>
-            <p>Every team moves through forming, storming, norming and performing (Tuckman, 1965) in about 10 months. Every person who joins or leaves knocks the team back. Splitting a team that got too big, or merging teams that got too small, knocks it back further.</p>
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M14 14.5c.6-.3 1.3-.5 2-.5 3.3 0 6 2.7 6 6"/></svg></div>
+            <h3>Teams need time together</h3>
+            <p>A new team needs most of a year to really click. Every arrival or departure sets it back a little.</p>
           </div>
-          <div>
-            <h3>Bigger means more overhead</h3>
-            <p>Communication paths grow as n(n−1)/2, so a team's output peaks at around 10–12 people (diminishing returns, Ricardo 1817; Brooks 1975). Coordinating many teams costs extra on top. The overhead you already have today is the baseline; only the change counts.</p>
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M6 15l4-5 4 3 4-6"/><path d="M15 7h3v3"/></svg></div>
+            <h3>Bigger isn't automatically better</h3>
+            <p>More people means more alignment. Past about ten people, a team gets slower, not faster.</p>
           </div>
-          <div>
-            <h3>Leaving costs more than a salary</h3>
-            <p>Leavers take knowledge with them, which their teammates must rebuild. Replacements take months to hire and then have to ramp up. Turnover above a healthy level hurts the motivation of everyone who stays. After a layoff, survivors lose motivation for about a year and more people leave. The chart compares a layoff with the same company without it.</p>
+          <div class="point">
+            <div class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h8"/><path d="M10 12h11"/><path d="M18 9l3 3-3 3"/></svg></div>
+            <h3>Every exit has a hidden price</h3>
+            <p>Know-how leaves with people, seats stay empty for months, and many departures drag down the mood of everyone who stays.</p>
           </div>
         </div>
-        <p class="caveat">This is a thinking tool, not a forecast. Every assumption above can be changed under <em>Advanced assumptions</em>. Use it to make the cost of change visible, then argue about the numbers with real data.</p>
-        <p class="credits">Based on the agent-based NetLogo model “Product Team Scaling” by K. Lechner (2023). © 2023-2026 K. Lechner. All rights reserved.</p>
+        <p class="caveat">A tool to start a conversation, not a forecast. Every number can be adjusted under <em>Advanced assumptions</em>.</p>
+        <p class="more-links">
+          <a href="https://github.com/catherinn/teams-scaling-agent-based-model/blob/main/docs/how-the-model-works.md" target="_blank" rel="noopener">Read the full model →</a>
+          <a href="https://github.com/catherinn/teams-scaling-agent-based-model/tree/main/netlogo" target="_blank" rel="noopener">Original research model (NetLogo) →</a>
+        </p>
       </section>
+
+      <section class="feedback" id="feedback" hidden>
+        <h2>What do you think?</h2>
+        <p class="sub">Does this match your experience? Two minutes of feedback helps make the model better.</p>
+        <form id="feedback-form">
+          <fieldset class="useful">
+            <legend>Was this useful?</legend>
+            <label><input type="radio" name="useful" value="Yes, very" required> Yes, very</label>
+            <label><input type="radio" name="useful" value="Somewhat"> Somewhat</label>
+            <label><input type="radio" name="useful" value="Not really"> Not really</label>
+          </fieldset>
+          <label class="field">What's missing, or doesn't match your experience?
+            <textarea name="comment" rows="3" maxlength="2000"></textarea>
+          </label>
+          <div class="row2">
+            <label class="field">Your role <span class="opt">(optional)</span>
+              <input name="role" maxlength="120" placeholder="e.g. HR, founder, engineering lead">
+            </label>
+            <label class="field">Email, if you'd like a reply <span class="opt">(optional)</span>
+              <input name="email" type="email" maxlength="200">
+            </label>
+          </div>
+          <button type="submit">Send feedback</button>
+          <p class="status" id="feedback-status" aria-live="polite"></p>
+        </form>
+      </section>
+      <p class="credits">Based on the agent-based NetLogo model “Product Team Scaling” by K. Lechner (2023). © 2023-2026 K. Lechner. All rights reserved.</p>
     </main>
 
     <script type="module" src="/src/main.ts"></script>

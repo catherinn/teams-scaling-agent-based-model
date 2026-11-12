@@ -1,5 +1,6 @@
 import { DEFAULTS, insights, runMany, withoutLayoff, type Params, type Summary } from "./model";
 import { drawChart } from "./chart";
+import { setupFeedback } from "./feedback";
 
 type Key = keyof Params;
 
@@ -173,6 +174,7 @@ function buildPresets() {
     b.addEventListener("click", () => {
       Object.assign(params, DEFAULTS, pr.p);
       update(true);
+setupFeedback();
     });
     root.appendChild(b);
   }
@@ -267,5 +269,7 @@ $("share").addEventListener("click", async () => {
 $("reset").addEventListener("click", () => {
   Object.assign(params, DEFAULTS);
   update(true);
+setupFeedback();
 });
 update(true);
+setupFeedback();

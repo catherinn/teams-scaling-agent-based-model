@@ -97,9 +97,29 @@ aside details[open] summary { margin-bottom: 8px; }
 
 .actions { display: flex; gap: 8px; margin-bottom: 24px; }
 
-.explain { border-top: 1px solid var(--line); padding: 24px 0 40px; }
+.explain { border-top: 1px solid var(--line); padding: 28px 0 20px; }
 .explain h2 { font-size: 20px; margin-bottom: 12px; }
-.explain .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-.explain p { margin: 0; color: #3b3850; font-size: 14px; }
+.explain .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+.explain p { margin: 0; color: #3b3850; font-size: 15px; }
+.point { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+.point .icon { width: 40px; height: 40px; border-radius: 10px; background: #efecff; color: var(--accent); display: grid; place-items: center; margin-bottom: 10px; }
+.point .icon svg { width: 22px; height: 22px; }
+.point h3 { font-size: 16px; }
+.more-links { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 14px !important; }
+.more-links a, .feedback a { color: var(--accent); font-weight: 600; text-decoration: none; }
+.more-links a:hover { text-decoration: underline; }
+.feedback { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin: 8px 0 20px; }
+.feedback h2 { font-size: 20px; }
+.feedback .sub { margin: 4px 0 14px; color: var(--muted); }
+.feedback form { display: grid; gap: 12px; max-width: 720px; }
+.feedback .useful { border: 0; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.feedback .useful legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 6px; width: 100%; }
+.feedback .useful label { font-size: 14px; display: flex; gap: 6px; align-items: center; }
+.feedback .field { display: grid; gap: 4px; font-size: 14px; font-weight: 600; }
+.feedback .opt { font-weight: 400; color: var(--muted); }
+.feedback textarea, .feedback input[type="email"], .feedback input[name="role"] { font: inherit; font-weight: 400; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; width: 100%; }
+.feedback .row2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.feedback button { justify-self: start; }
+.feedback .status { margin: 0; font-size: 14px; color: var(--muted); }
 .caveat { margin-top: 18px !important; padding: 12px 14px; background: #fff7ed; border-radius: 10px; }
-.credits { margin-top: 12px !important; color: var(--muted) !important; font-size: 13px !important; }
+.credits { color: var(--muted); font-size: 13px; margin: 0 0 32px; }
